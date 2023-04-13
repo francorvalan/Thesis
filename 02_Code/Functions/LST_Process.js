@@ -18,10 +18,14 @@ var LST_Process = function(x) {
   var QC_Cloud_Cover_Day = QC_Day.eq(2); // Day Cloud mask bit 00000010: "LST not produced due to cloud effects"
 
   // Quality mask
-  for (var i = 0; i < 10; i++) { // a compact way in stead of write QC_Day.eq(0).or(QC_Day.eq(64)...)
-    QC_mask_Day = QC_mask_Day.or(QC_Day.eq([0, 64, 128, 1, 65, 129, 16, 80, 17, 81][i]));
-    QC_mask_Night = QC_mask_Night.or(QC_Night.eq([0, 64, 128, 1, 65, 129, 16, 80, 17, 81][i]));
-  }
+  var QC_mask_Day = QC_Day.eq(0).or(QC_Day.eq(64).or(QC_Day.eq(128).or(QC_Day.eq(1).or(QC_Day.eq(65)
+                    .or(QC_Day.eq(129).or(QC_Day.eq(16).or(QC_Day.eq(80).or(QC_Day.eq(17).or(QC_Day.eq(81)
+  var QC_mask_Night = QC_Night.eq(0).or(QC_Night.eq(64).or(QC_Night.eq(128).or(QC_Night.eq(1).or(QC_Night.eq(65)
+                    .or(QC_Night.eq(129).or(QC_Night.eq(16).or(QC_Night.eq(80).or(QC_Night.eq(17).or(QC_Night.eq(81)
+  // for (var i = 0; i < 10; i++) { // a compact way in stead of write QC_Day.eq(0).or(QC_Day.eq(64)...)
+  //   QC_mask_Day = QC_mask_Day.or(QC_Day.eq([0, 64, 128, 1, 65, 129, 16, 80, 17, 81][i]));
+  //   QC_mask_Night = QC_mask_Night.or(QC_Night.eq([0, 64, 128, 1, 65, 129, 16, 80, 17, 81][i]));
+  // }
 
   // masking, scaling, temperature unit transform (K to Celsius) and replacing the original band
   x = x.addBands(x.select('LST_Day_1km').multiply(0.02).subtract(273.15).updateMask(QC_mask_Day), null, true); // Apply mask over Days temperatures
