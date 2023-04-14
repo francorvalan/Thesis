@@ -9,6 +9,7 @@ var LST_Process = function(x) {
   More information in Table 13 (*2). Bit flags defined for SDSs QC_day and QC_Night in MOD11A1.
     *1 https://lpdaac.usgs.gov/documents/715/MOD11_User_Guide_V61.pdf
     *2 https://icess.eri.ucsb.edu/modis/LstUsrGuide/usrguide_1dtil.html#qa
+  Note: to run this script in Google Earth Engine plataform, it's necessary to modify the lines 30 & 31, changing "None" (python) for "null"(js)
   */
   x = x.clip(ROI);
   var QC_Day = x.select('QC_Day');
@@ -26,8 +27,8 @@ var LST_Process = function(x) {
   QC_mask_Night = QC_mask_Night.gte(1)
 
   // masking, scaling, temperature unit transform (K to Celsius) and replacing the original band
-  x = x.addBands((x.select('LST_Day_1km').multiply(0.02).subtract(273.15).updateMask(QC_mask_Day)), null, true); // Apply mask over Days temperatures
-  x = x.addBands((x.select('LST_Night_1km').updateMask(QC_mask_Night).multiply(0.02).subtract(273.15)), null, true); // Apply mask over Nights temperatures
+  x = x.addBands((x.select('LST_Day_1km').multiply(0.02).subtract(273.15).updateMask(QC_mask_Day)), None, true); // Apply mask over Days temperatures
+  x = x.addBands((x.select('LST_Night_1km').updateMask(QC_mask_Night).multiply(0.02).subtract(273.15)), None, true); // Apply mask over Nights temperatures
   var mask = (QC_mask_Night.multiply(QC_mask_Night)).rename('mask'); // combining the Day and Night Temperature
 
   // Day - Night Temperature Difference
