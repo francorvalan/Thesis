@@ -27,8 +27,8 @@ var LST_Process = function(x) {
   QC_mask_Night = QC_mask_Night.gte(1)
 
   // masking, scaling, temperature unit transform (K to Celsius) and replacing the original band
-  x = x.addBands((x.select('LST_Day_1km').multiply(0.02).subtract(273.15).updateMask(QC_mask_Day)), None, True); // Apply mask over Days temperatures
-  x = x.addBands((x.select('LST_Night_1km').updateMask(QC_mask_Night).multiply(0.02).subtract(273.15)), None, True); // Apply mask over Nights temperatures
+  x = x.addBands((x.select('LST_Day_1km').multiply(0.02).subtract(273.15).updateMask(QC_mask_Day)))//, None, True); // Apply mask over Days temperatures
+  x = x.addBands((x.select('LST_Night_1km').updateMask(QC_mask_Night).multiply(0.02).subtract(273.15)))//, None, True); // Apply mask over Nights temperatures
   var mask = (QC_mask_Night.multiply(QC_mask_Night)).rename('mask'); // combining the Day and Night Temperature
 
   // Day - Night Temperature Difference
